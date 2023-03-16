@@ -16,15 +16,19 @@ export default class NotesApp extends Component{
     await fetch('http://localhost:7777/notes').then(r => r.json())
     .then(result => result.forEach(note => array.push(note)));
 
+    if (this.state.notesArray.length === array.length) {
+      return;
+    }
+
     this.setState({notesArray: array})
   }
 
-  addNote(e) {
+  async addNote(e) {
     e.preventDefault();
 
     const noteText = e.target[0].value;
     
-    fetch('http://localhost:7777/notes', {
+    await fetch('http://localhost:7777/notes', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -33,12 +37,16 @@ export default class NotesApp extends Component{
     })
 
     e.target[0].value = '';
+
+    this.getNotes();
   }
 
   async removeNote(e) {
     if (e.target.classList.contains('remove-btn')) {
       await fetch(`http://localhost:7777/notes/${e.currentTarget.id}`, {method: 'DELETE'})
     }
+
+    this.getNotes();
   }
 
   render() {

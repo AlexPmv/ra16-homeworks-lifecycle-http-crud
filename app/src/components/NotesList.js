@@ -7,10 +7,6 @@ export default class NotesList extends Component {
     this.props.getNotes()
   }
 
-  componentDidUpdate() {
-    this.props.getNotes()
-  }
-
   render() {
     if (this.props.notesArray.length < 1) {
       return ( null );
